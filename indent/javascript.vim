@@ -325,11 +325,7 @@ function GetJavascriptIndent()
 
     let bs = strpart('(){}[]', stridx(')}]', line[col - 1]) * 2, 2)
     if searchpair(escape(bs[0], '\['), '', bs[1], 'bW', s:skip_expr) > 0
-      if line[col-1]==')' && col('.') != col('$') - 1
-        let ind = virtcol('.')-1
-      else
-        let ind = indent(s:GetMSL(line('.'), 0))
-      endif
+      let ind = indent(s:GetMSL(line('.'), 0)) " XXX JMC
     endif
     return ind
   endif
@@ -387,11 +383,7 @@ function GetJavascriptIndent()
   if line =~ '[[({]'
     let counts = s:LineHasOpeningBrackets(lnum)
     if counts[0] == '1' && searchpair('(', '', ')', 'bW', s:skip_expr) > 0
-      if col('.') + 1 == col('$')
-        return ind + &sw
-      else
-        return virtcol('.')
-      endif
+      return ind + &sw " XXX JMC
     elseif counts[1] == '1' || counts[2] == '1'
       return ind + &sw
     else
